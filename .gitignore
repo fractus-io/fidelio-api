@@ -135,4 +135,8 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# docker volumes
+docker/postgres/
+/app/site.db
+
 # End of https://www.toptal.com/developers/gitignore/api/python
