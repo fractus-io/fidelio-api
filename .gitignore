@@ -139,4 +139,7 @@ dmypy.json
 docker/postgres/
 /app/site.db
 
+# nvd zip records
+nvd/
+
 # End of https://www.toptal.com/developers/gitignore/api/python
