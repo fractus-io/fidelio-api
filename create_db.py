@@ -1,5 +1,5 @@
 from app import create_app, db
-
+from app.models import *
 
 # creating app to access databse without starting the server
 app = create_app()

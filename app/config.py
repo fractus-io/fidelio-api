@@ -13,16 +13,16 @@ class BaseConfig(object):
 class TestingConfig(BaseConfig):
     """testing config"""
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = ''
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
     DEBUG = True
 
 
 class DevelopmentConfig(BaseConfig):
     """dev config"""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = ''
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DB_URI", "sqlite:///test.db")
 
 
 class ProductionConfig(BaseConfig):
     """production config"""
-    SQLALCHEMY_DATABASE_URI = os.environ.get("")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DB_URI")
