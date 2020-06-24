@@ -1,7 +1,7 @@
 version: '3'
 services: 
-    incubator:
-        container_name: incubator_api
+    fidelio:
+        container_name: fidelio_api
         build: .
         ports:
             - "5000:5000"
@@ -13,14 +13,14 @@ services:
             - postgres
         restart: always
         environment: 
-            DB_URI: postgres://root:incubator@postgres/incubator
+            DB_URI: postgres://root:fidelio@postgres/fidelio
     
     postgres:
-        container_name: incubator_postgres
+        container_name: fidelio_postgres
         image: postgres
         environment: 
             POSTGRES_USER: root
-            POSTGRES_PASSWORD: incubator
+            POSTGRES_PASSWORD: fidelio
         volumes: 
             - ./docker/init/db.sh:/docker-entrypoint-initdb.d/initdb.sh 
             - ./docker/postgres:/var/lib/postgresql/data

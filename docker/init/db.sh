@@ -2,6 +2,6 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "root" --dbname "root" <<-EOSQL
-    CREATE DATABASE incubator;
-    GRANT ALL PRIVILEGES ON DATABASE incubator TO root;
+    CREATE DATABASE fidelio;
+    GRANT ALL PRIVILEGES ON DATABASE fidelio TO root;
 EOSQL
