@@ -1,4 +1,5 @@
 from os import listdir
+from datetime import datetime
 from os.path import isfile, join
 import zipfile
 import json
@@ -36,17 +37,55 @@ data = json.loads(json_file.read())
 # print(data.get("CVE_data_numberOfCVEs"))
 # print("------------")
 
-print(data.get("CVE_Items")[0].keys())
-print("------------")
-print(data.get("CVE_Items")[0].get("cve"))
-print("------------")
-print(data.get("CVE_Items")[0].get("impact"))
-print("------------")
-print(data.get("CVE_Items")[0].get("configurations"))
+cve = data.get("CVE_Items")[0]
 
-# for index, thing in enumerate(data.get("CVE_Items")):
-#     print(index, "nice"
-#           if all([data.get("CVE_Items")[0].get("cve"),
-#                  data.get("CVE_Items")[0].get("impact"),
-#                  data.get("CVE_Items")[0].get("configurations")
-#                   ]) else ":(")
+# print(cve)
+# print(json.dumps(cve, indent=4))
+
+for index, report in enumerate(data["CVE_Items"]):
+
+    try:
+
+        cve_id = report.get("cve").get("CVE_data_meta").get("ID")
+        last_mod_date = datetime.strptime(report.get("lastModifiedDate"), "%Y-%m-%dT%H:%MZ")
+        pub_date = datetime.strptime(report.get("publishedDate"), "%Y-%m-%dT%H:%MZ")
+        summary = report.get("cve").get("description").get("description_data")[0].get("value")
+        impact = report.get("impact")
+
+        if "REJECT" in summary:
+            continue
+
+        if impact != {}:
+            baseMetricV2 = impact.get("baseMetricV2")
+
+            cvss_base = baseMetricV2.get("cvssV2").get("baseScore")
+            cvss_impact = baseMetricV2.get("impactScore")
+            cvss_exploit = baseMetricV2.get("exploitabilityScore")
+            cvss_access_vector = baseMetricV2.get("cvssV2").get("accessVector")
+            cvss_access_complexity = baseMetricV2.get("cvssV2").get("accessComplexity")
+            cvss_access_authentication = baseMetricV2.get("cvssV2").get("authentication")
+            cvss_confidentiality_impact = baseMetricV2.get("cvssV2").get("confidentialityImpact")
+            cvss_integrity_impact = baseMetricV2.get("cvssV2").get("integrityImpact")
+            cvss_availability_impact = baseMetricV2.get("cvssV2").get("availabilityImpact")
+            cvss_vector = baseMetricV2.get("cvssV2").get("vectorString")
+            cwe_id = report.get("cve").get("problemtype").get("problemtype_data")[0].get("description")[0].get("value")
+        else:
+
+            cvss_base = None
+            cvss_impact = None
+            cvss_exploit = None
+            cvss_access_vector = None
+            cvss_access_complexity = None
+            cvss_access_authentication = None
+            cvss_confidentiality_impact = None
+            cvss_integrity_impact = None
+            cvss_availability_impact = None
+            cvss_vector = None
+
+    except AttributeError as e:
+        print(e)
+        print(cve_id)
+        print(report.get("impact"))
+        print(summary)
+        print("------------")
+        continue
