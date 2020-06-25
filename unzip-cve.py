@@ -21,7 +21,7 @@ data = json.loads(json_file.read())
 cve = data.get("CVE_Items")[0]
 
 # print(cve)
-# print(json.dumps(cve, indent=4))
+print(json.dumps(cve, indent=2))
 
 
 def extract_data_from_zip(target_file):
@@ -83,25 +83,25 @@ def extract_data_from_zip(target_file):
             continue
 
         cve = {
-            "cveId": cve_id,
-            "publishedDate": pub_date,
-            "lastModifiedDate": last_mod_date,
+            "cve_id": cve_id,
+            "published_date": pub_date,
+            "last_modified_date": last_mod_date,
             "summary": summary,
-            "cvssBase": cvss_base,
-            "cvssImpact": cvss_impact,
-            "cvssExploit": cvss_exploit,
-            "cvssAccessVector": cvss_access_vector,
-            "cvssAccessComplexity": cvss_access_complexity,
-            "cvssAccessAuthentication": cvss_access_authentication,
-            "cvssConfidentialityImpact": cvss_confidentiality_impact,
-            "cvssIntegrityImpact": cvss_integrity_impact,
-            "cvssAvailabilityImpact": cvss_availability_impact,
-            "cvssVector": cvss_vector,
-            "cweId": cwe_id
+            "cvss_base": cvss_base,
+            "cvss_impact": cvss_impact,
+            "cvss_exploit": cvss_exploit,
+            "cvss_access_vector": cvss_access_vector,
+            "cvss_access_complexity": cvss_access_complexity,
+            "cvss_access_authentication": cvss_access_authentication,
+            "cvss_confidentiality_impact": cvss_confidentiality_impact,
+            "cvss_integrity_impact": cvss_integrity_impact,
+            "cvss_availability_impact": cvss_availability_impact,
+            "cvss_vector": cvss_vector,
+            "cwe_id": cwe_id
         }
         cves.append(cve)
 
     return cves
 
 
-print(extract_data_from_zip("nvd/nvdcve-1.1-2020.json.zip")[-1]["cveId"])
+# print(extract_data_from_zip("nvd/nvdcve-1.1-2020.json.zip"))
