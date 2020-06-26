@@ -1,6 +1,8 @@
+import os
 import click
 from app.models import *
 from app import create_app, db
+from unzip_cve import extract_data_from_zip
 
 
 # # closing the app
@@ -8,7 +10,7 @@ from app import create_app, db
 
 
 def flush():
-    # creating app to access databse without starting the server
+    # creating app to access database without starting the server
     app = create_app()
 
     with app.app_context():
@@ -18,7 +20,7 @@ def flush():
 
 
 def create_tables():
-    # creating app to access databse without starting the server
+    # creating app to access database without starting the server
     app = create_app()
 
     with app.app_context():
@@ -26,11 +28,39 @@ def create_tables():
         db.create_all()
 
 
+def fill_db():
+    # creating app to access database without starting the server
+    app = create_app()
+
+    with app.app_context():
+        """db_manipulation goes here"""
+        cves = extract_data_from_zip("nvd/nvdcve-1.1-2020.json.zip")
+        for cve_data in cves:
+            cve = CVE(**cve_data)
+            db.session.add(cve)
+            db.session.commit()
+
+
+def fill_db_all():
+    # creating app to access database without starting the server
+    app = create_app()
+
+    with app.app_context():
+        """db_manipulation goes here"""
+        for file in [f for f in os.listdir("nvd") if not f.startswith(".")]:
+            cves = extract_data_from_zip(f"nvd/{file}")
+            for cve_data in cves:
+                cve = CVE(**cve_data)
+                db.session.add(cve)
+                db.session.commit()
+
+
 funcs = {
     "flush": flush,
     "recreate-tables": flush,
-    "create-tables": create_tables
-    # TODO: fill the db
+    "create-tables": create_tables,
+    "fill-db-latest": fill_db,
+    "fill-db-all": fill_db_all,
 }
 
 
