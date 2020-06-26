@@ -14,19 +14,3 @@ def home():
 @api.route("/<string:variable>")
 def greeting(variable):
     return {"hello": variable}
-
-
-@api.route("/add")
-def time():
-    # pass
-    t = Test()
-    db.session.add(t)
-    db.session.commit()
-
-    return {"nice": 200}
-
-
-@api.route("/get")
-def get():
-    tests = Test.query.first()
-    return {"t": tests.id}
