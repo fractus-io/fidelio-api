@@ -2,16 +2,6 @@ from app import db
 from datetime import datetime
 
 
-class Test(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<test[{self.id}, {self.date_posted}]>"
-
-# TODO: add cves table with corresponding columns defined in unzip-data.py
-
-
 class CVE(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cve_id = db.Column(db.String(20), nullable=False)
@@ -30,3 +20,6 @@ class CVE(db.Model):
     cvss_integrity_impact = db.Column(db.String(20), nullable=True)
     cvss_availability_impact = db.Column(db.String(20), nullable=True)
     cvss_vector = db.Column = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"<CVE[{self.id},{self.cve_id}]>"
