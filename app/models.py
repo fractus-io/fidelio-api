@@ -14,8 +14,8 @@ class Test(db.Model):
 
 class CVE(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    cve_id = db.Column(db.String(15), nullable=False)
-    cwe_id = db.Column(db.String(8), nullable=False)
+    cve_id = db.Column(db.String(20), nullable=False)
+    cwe_id = db.Column(db.String(15), nullable=False)
     published_date = db.Column(db.DateTime, nullable=False)
     last_modified_date = db.Column(db.DateTime, nullable=False)
     summary = db.Column(db.Text, nullable=False)
