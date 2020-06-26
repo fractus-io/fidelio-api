@@ -21,7 +21,7 @@ data = json.loads(json_file.read())
 cve = data.get("CVE_Items")[0]
 
 # print(cve)
-print(json.dumps(cve, indent=2))
+# print(json.dumps(cve, indent=2))
 
 
 def extract_data_from_zip(target_file):
