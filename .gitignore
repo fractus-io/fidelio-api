@@ -141,6 +141,7 @@ docker/postgres/
 
 # nvd zip records
 nvd/*
-!nvd/.gitkeep
+!nvd/cve/.gitkeep
+!nvd/cpe/.gitkeep
 
 # End of https://www.toptal.com/developers/gitignore/api/python

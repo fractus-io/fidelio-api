@@ -7,6 +7,6 @@ for filename in re.findall(r"nvdcve-1.1-[0-9]*\.json\.zip", r.text):
     print(filename)
     r_file = requests.get("https://nvd.nist.gov/feeds/json/cve/1.1/" + filename,
                           stream=True)
-    with open("nvd/" + filename, 'wb') as f:
+    with open("nvd/cve/" + filename, 'wb') as f:
         for chunk in r_file:
             f.write(chunk)

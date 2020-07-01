@@ -34,7 +34,7 @@ def fill_db():
 
     with app.app_context():
         """db_manipulation goes here"""
-        cves = extract_data_from_zip("nvd/nvdcve-1.1-2020.json.zip")
+        cves = extract_data_from_zip("nvd/cve/nvdcve-1.1-2020.json.zip")
         for cve_data in cves:
             cve = CVE(**cve_data)
             db.session.add(cve)
@@ -47,8 +47,8 @@ def fill_db_all():
 
     with app.app_context():
         """db_manipulation goes here"""
-        for file in [f for f in os.listdir("nvd") if not f.startswith(".")]:
-            cves = extract_data_from_zip(f"nvd/{file}")
+        for file in [f for f in os.listdir("nvd/cve") if not f.startswith(".")]:
+            cves = extract_data_from_zip(f"nvd/cve/{file}")
             for cve_data in cves:
                 cve = CVE(**cve_data)
                 db.session.add(cve)
