@@ -140,7 +140,8 @@ docker/postgres/
 /app/site.db
 
 # nvd zip records
-nvd/*
+nvd/cve/*
+nvd/cpe/*
 !nvd/cve/.gitkeep
 !nvd/cpe/.gitkeep
 
