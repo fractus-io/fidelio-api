@@ -2,6 +2,7 @@ import os
 import click
 from app.models import *
 from app import create_app, db
+from unzip_cpe import parse_xml
 from unzip_cve import extract_data_from_zip
 
 
@@ -55,12 +56,63 @@ def fill_db_all():
                 db.session.commit()
 
 
+def fill_cpe():
+    # creating app to access database without starting the server
+    app = create_app()
+
+    with app.app_context():
+        """db_manipulation goes here"""
+        cpes = parse_xml("nvd/cpe/test.xml.zip")["cpes"]
+        vendors = parse_xml("nvd/cpe/test.xml.zip")["vendors"]
+        products = parse_xml("nvd/cpe/test.xml.zip")["products"]
+
+        for vendor_name in vendors:
+            vendor = Vendor(name=vendor_name)
+            db.session.add(vendor)
+            db.session.commit()
+
+        for product_name in products:
+            product = Product(name=product_name)
+            db.session.add(product)
+            db.session.commit()
+
+        for cpe_data in cpes:
+            cpe_data_raw = {k: v for k, v in cpe_data.items() if k not in ["vendor", "product", "references"]}
+
+            cpe = CPE(**cpe_data_raw)
+
+            vendor = Vendor.query.filter_by(name=cpe_data["vendor"]["name"]).first()
+            product = Product.query.filter_by(name=cpe_data["product"]["name"]).first()
+
+            if vendor is None:
+                print("no vendor found")
+                continue
+            if product is None:
+                print("no product found")
+
+            # print(vendor, product)
+
+            # FIXME
+            cpe.vendor = vendor
+            cpe.product = product
+
+            db.session.add(cpe)
+            db.session.commit()
+
+            for ref_data in cpe_data["references"]:
+                reference = Reference(**ref_data)
+                reference.CPE = cpe
+                db.session.add(reference)
+                db.session.commit()
+
+
 funcs = {
     "flush": flush,
     "recreate-tables": flush,
     "create-tables": create_tables,
     "fill-db-latest": fill_db,
     "fill-db-all": fill_db_all,
+    "test": fill_cpe,
 }
 
 

@@ -31,6 +31,7 @@ class CVE(db.Model):
 class Vendor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    cpes = db.relationship("CPE", backref="vendor", lazy=True)
 
     def __repr__(self):
         return f"<Vendor[{self.id},{self.name}]>"
@@ -39,6 +40,7 @@ class Vendor(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    cpes = db.relationship("CPE", backref="product", lazy=True)
 
     def __repr__(self):
         return f"<Product[{self.id},{self.name}]>"
@@ -58,8 +60,8 @@ class CPE(db.Model):
     other = db.Column(db.String(255))
 
     references = db.relationship("Reference", backref="CPE", lazy=True)
-    # vendor_id int,
-    # product_id int,
+    vendor_id = db.Column(db.Integer, db.ForeignKey("vendor.id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
 
     def __repr__(self):
         return f"<CPE[{self.id},{self.title}]>"
