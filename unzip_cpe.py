@@ -94,8 +94,8 @@ def parse_xml(target_file):
 
     return {
         "cpes": cpe_items,
-        "vendors": vendors,
-        "products": products,
+        "vendors": list(vendors),
+        "products": list(products),
     }
 
 
