@@ -25,6 +25,25 @@ class CVE(db.Model):
         return f"<CVE[{self.id},{self.cve_id}]>"
 
 
+# -------------------------------------------------------------------
+
+
+class Vendor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"<Vendor[{self.id},{self.name}]>"
+
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"<Product[{self.id},{self.name}]>"
+
+
 class CPE(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     part = db.Column(db.String(1), nullable=False)
@@ -38,5 +57,20 @@ class CPE(db.Model):
     target_hw = db.Column(db.String(255))
     other = db.Column(db.String(255))
 
+    references = db.relationship("Reference", backref="CPE", lazy=True)
+    # vendor_id int,
+    # product_id int,
+
     def __repr__(self):
         return f"<CPE[{self.id},{self.title}]>"
+
+
+class Reference(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cpe_id = db.Column(db.Integer, db.ForeignKey("CPE.id"), nullable=False)
+    url = db.Column(db.Text)
+    type = db.Column(db.String(255))
+    desc = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"<Reference[{self.id},{self.type},{self.desc}]>"
