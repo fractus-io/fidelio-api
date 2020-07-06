@@ -1,13 +1,15 @@
-from flask import Flask
-from app.config import TestingConfig, DevelopmentConfig, ProductionConfig
 import os
+from flask import Flask
+from flask_profiler import Profiler
 from flask_sqlalchemy import SQLAlchemy
+from app.config import TestingConfig, DevelopmentConfig, ProductionConfig
 
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 
 db = SQLAlchemy()
+profiler = Profiler()
 
 from app.api.routes import api
 from app.errors.handlers import errors
@@ -25,6 +27,8 @@ def create_app():
 
     from app.api.routes import api
     from app.errors.handlers import errors
+
+    profiler.init_app(app)
 
     app.register_blueprint(api)
     app.register_blueprint(errors)

@@ -5,6 +5,18 @@ import random
 
 class BaseConfig(object):
     """base config"""
+    FLASK_PROFILER = {
+        "enabled": True,
+        "basicAuth": {
+            "enabled": True,
+            "username": "admin",
+            "password": "admin",
+        },
+        "storage": {
+            "engine": "sqlalchemy",
+            "db_url": os.environ.get("DB_URI", "sqlite:///test.db"),
+        },
+    }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get("secret_key", ''.join(
         [random.choice(string.ascii_letters + string.digits) for n in range(16)]))
