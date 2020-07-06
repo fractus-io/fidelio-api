@@ -1,5 +1,4 @@
 import requests
-# import xml.etree.ElementTree as ET
 
 r_file = requests.get("https://nvd.nist.gov/feeds/xml/cpe/dictionary/official-cpe-dictionary_v2.3.xml.zip",
                       stream=True

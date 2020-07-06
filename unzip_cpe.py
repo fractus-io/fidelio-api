@@ -3,21 +3,6 @@ import zipfile
 from lxml import etree
 
 
-# print(root[1].getchildren())
-
-# for c in root[1].getchildren():
-#     print(c.tag)
-
-# print(etree.QName(root[1]).localname)
-
-# for child in root[1:]:
-#     print(child.items())
-
-# # gets all subelements
-# for child in root[1].getiterator():
-#     print(child.text if child.text is not None else "")
-
-
 def check_empty(val):
     return None if val == "*" else val
 
@@ -46,8 +31,8 @@ def parse_xml(target_file):
                 name = child.get("name").split(":")
 
                 part = check_empty(name[2].replace("/", ""))
-                vendor = check_empty(name[3].replace("\\", ""))  # noqa: F841
-                product = check_empty(name[4].replace("\\", ""))  # noqa: F841
+                vendor = check_empty(name[3].replace("\\", ""))
+                product = check_empty(name[4].replace("\\", ""))
                 version = check_empty(name[5])
                 update_version = check_empty(name[6])
                 edition = check_empty(name[7])
@@ -97,7 +82,3 @@ def parse_xml(target_file):
         "vendors": list(vendors),
         "products": list(products),
     }
-
-
-# print(parse_xml("nvd/cpe/test.xml.zip")["cpes"][3])
-# print(len(parse_xml("nvd/cpe/test.xml.zip")["products"]))

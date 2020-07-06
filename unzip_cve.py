@@ -4,25 +4,6 @@ from os.path import isfile, join
 import zipfile
 import json
 
-# files = [f for f in listdir("nvd/") if isfile(join("nvd/", f))]
-# files.sort()
-
-# file = zipfile.ZipFile("nvd/nvdcve-1.1-2020.json.zip", "r")
-# json_file = file.open(file.namelist()[0])
-
-# data = json.loads(json_file.read())
-
-# print(data.get("CVE_data_type"))
-# print(data.get("CVE_data_format"))
-# print(data.get("CVE_data_version"))
-# print(data.get("CVE_data_numberOfCVEs"))
-# print("------------")
-
-# cve = data.get("CVE_Items")[0]
-
-# print(cve)
-# print(json.dumps(cve, indent=2))
-
 
 def extract_data_from_zip(target_file):
     """unzip the file, parse the data and return a list of CVEs"""
@@ -102,6 +83,3 @@ def extract_data_from_zip(target_file):
         cves.append(cve)
 
     return cves
-
-
-# print(extract_data_from_zip("nvd/nvdcve-1.1-2020.json.zip"))

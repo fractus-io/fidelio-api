@@ -6,10 +6,6 @@ from unzip_cpe import parse_xml
 from unzip_cve import extract_data_from_zip
 
 
-# # closing the app
-# print("Database added. Exiting the program...")
-
-
 def flush():
     # creating app to access database without starting the server
     app = create_app()
@@ -29,7 +25,7 @@ def create_tables():
         db.create_all()
 
 
-def fill_db():
+def fill_cve():
     # creating app to access database without starting the server
     app = create_app()
 
@@ -42,29 +38,16 @@ def fill_db():
             db.session.commit()
 
 
-def fill_db_all():
-    # creating app to access database without starting the server
-    app = create_app()
-
-    with app.app_context():
-        """db_manipulation goes here"""
-        for file in [f for f in os.listdir("nvd/cve") if not f.startswith(".")]:
-            cves = extract_data_from_zip(f"nvd/cve/{file}")
-            for cve_data in cves:
-                cve = CVE(**cve_data)
-                db.session.add(cve)
-                db.session.commit()
-
-
 def fill_cpe():
     # creating app to access database without starting the server
     app = create_app()
 
     with app.app_context():
         """db_manipulation goes here"""
-        cpes = parse_xml("nvd/cpe/test.xml.zip")["cpes"]
-        vendors = parse_xml("nvd/cpe/test.xml.zip")["vendors"]
-        products = parse_xml("nvd/cpe/test.xml.zip")["products"]
+        xml_data = parse_xml("nvd/cpe/test.xml.zip")
+        cpes = xml_data["cpes"]
+        vendors = xml_data["vendors"]
+        products = xml_data["products"]
 
         for vendor_name in vendors:
             vendor = Vendor(name=vendor_name)
@@ -89,10 +72,8 @@ def fill_cpe():
                 continue
             if product is None:
                 print("no product found")
+                continue
 
-            # print(vendor, product)
-
-            # FIXME
             cpe.vendor = vendor
             cpe.product = product
 
@@ -110,9 +91,8 @@ funcs = {
     "flush": flush,
     "recreate-tables": flush,
     "create-tables": create_tables,
-    "fill-db-latest": fill_db,
-    "fill-db-all": fill_db_all,
-    "test": fill_cpe,
+    "fill-db-cve": fill_cve,
+    "fill-db-cpe": fill_cpe,
 }
 
 
