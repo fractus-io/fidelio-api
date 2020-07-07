@@ -3,7 +3,7 @@ import click
 from app.models import *
 from app import create_app, db
 from unzip_cpe import parse_xml
-from unzip_cve import extract_data_from_zip
+from unzip_cve import extract_data_from_zip, extract_cpe_uris
 
 
 def flush():
@@ -88,12 +88,27 @@ def fill_cpe():
                 db.session.commit()
 
 
+def build_relationships():
+    # creating app to access database without starting the server
+    app = create_app()
+
+    with app.app_context():
+        """db_manipulation goes here"""
+        for file in [f for f in os.listdir("nvd/cve") if not f.startswith(".")]:
+            cves = extract_cpe_uris(f"nvd/cve/{file}")
+            for cve_data in cves:
+                cve = CVE.query.filter_by(cve_id=cve_data.get("cve_id")).first()
+                if cve is None:
+                    print("nema")
+
+
 funcs = {
     "flush": flush,
     "recreate-tables": flush,
     "create-tables": create_tables,
     "fill-db-cve": fill_cve,
     "fill-db-cpe": fill_cpe,
+    "build": build_relationships,
 }
 
 
@@ -102,7 +117,8 @@ funcs = {
 def manip(action):
     """Database manipulation tool"""
     try:
-        funcs[action].__call__()
+        funcs[action.strip()].__call__()
+
     except KeyError:
         ctx = click.get_current_context()
         click.echo(f"Action {action} not found", err=True)

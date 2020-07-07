@@ -83,3 +83,51 @@ def extract_data_from_zip(target_file):
         cves.append(cve)
 
     return cves
+
+
+def extract_cpe_uris(target_file):
+
+    file = zipfile.ZipFile(target_file, "r")
+    json_file = file.open(file.namelist()[0])
+
+    data = json.loads(json_file.read())
+
+    cves = []
+
+    for index, report in enumerate(data["CVE_Items"]):
+        try:
+            summary = report.get("cve").get("description").get("description_data")[0].get("value")
+            cve_id = report.get("cve").get("CVE_data_meta").get("ID")
+            cpe_nodes = report.get("configurations").get("nodes")
+            cpe_list = []
+
+            if cpe_nodes == [] or "REJECT" in summary:
+                continue
+
+            for node in cpe_nodes:
+                cpe_children = node.get("children")
+                if node.get("cpe_match") is None:
+                    continue
+
+                elif cpe_children is None:
+                    for match in node.get("cpe_match"):
+                        cpe_list.append(match.get("cpe23Uri"))
+                else:
+                    for child in cpe_children:
+                        for match in child.get("cpe_match"):
+                            cpe_list.append(match.get("cpe23Uri"))
+
+            cve = {
+                "cve_id": cve_id,
+                "cpe_uris": cpe_list,
+            }
+            cves.append(cve)
+
+        except TypeError as e:
+            print(e)
+            print(cve_id)
+
+    return cves
+
+
+# print(extract_cpe_uris("nvd/cve/nvdcve-1.1-2020.json.zip"))

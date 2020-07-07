@@ -10,4 +10,4 @@ exclude =
     build,
     dist,
     docker
-max-complexity=10
+max-complexity=11
