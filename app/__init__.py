@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_profiler import Profiler
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from app.config import TestingConfig, DevelopmentConfig, ProductionConfig
 
 
@@ -10,6 +11,7 @@ app.config.from_object(DevelopmentConfig)
 
 db = SQLAlchemy()
 profiler = Profiler()
+ma = Marshmallow()
 
 from app.api.routes import api
 from app.errors.handlers import errors
@@ -24,6 +26,7 @@ def create_app():
         "PRODUCTION")).lower() == 'true' else DevelopmentConfig)
 
     db.init_app(app)
+    ma.init_app(app)
 
     from app.api.routes import api
     from app.errors.handlers import errors

@@ -4,3 +4,5 @@ gunicorn
 psycopg2
 flask_profiler
 flask_sqlalchemy
+flask_marshmallow
+marshmallow-sqlalchemy

@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from app import db
 from app.models import *
+from app.schemas import cve_schema, cves_schema
 
 
 api = Blueprint('api', __name__)
@@ -8,7 +9,9 @@ api = Blueprint('api', __name__)
 
 @api.route("/")
 def home():
-    return {"home": "page"}
+    cve = CVE.query.first()
+
+    return {"home": cve_schema.dump(cve)}
 
 
 @api.route("/<string:variable>")
