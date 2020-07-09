@@ -21,11 +21,14 @@ class CVE(db.Model):
     cvss_availability_impact = db.Column(db.String(20))
     cvss_vector = db.Column(db.Text)
 
+    # many to many relationship
+    cpes = db.relationship("CPE", secondary="software", backref="cves")
+
     def __repr__(self):
         return f"<CVE[{self.id},{self.cve_id}]>"
 
 
-# -------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
 
 
 class Vendor(db.Model):
@@ -76,3 +79,13 @@ class Reference(db.Model):
 
     def __repr__(self):
         return f"<Reference[{self.id},{self.type},{self.desc}]>"
+
+
+# -------------------------------------------------------------------------------------
+
+
+software = db.Table(
+    "software",
+    db.Column("cve_id", db.Integer, db.ForeignKey("CVE.id")),
+    db.Column("cpe_id", db.Integer, db.ForeignKey("CPE.id")),
+)
