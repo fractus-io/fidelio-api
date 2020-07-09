@@ -2,7 +2,7 @@ import os
 import click
 from app.models import *
 from app import create_app, db
-from unzip_cpe import parse_xml
+from unzip_cpe import parse_xml, check_empty
 from unzip_cve import extract_data_from_zip, extract_cpe_uris
 
 
@@ -97,9 +97,29 @@ def build_relationships():
         for file in [f for f in os.listdir("nvd/cve") if not f.startswith(".")]:
             cves = extract_cpe_uris(f"nvd/cve/{file}")
             for cve_data in cves:
-                cve = CVE.query.filter_by(cve_id=cve_data.get("cve_id")).first()
+                cve = CVE.query.filter_by(cve_id=cve_data["cve_id"]).first()
                 if cve is None:
-                    print("nema")
+                    print("No CVE found.")
+                    continue
+                for cpe_uri in cve_data["cpe_uris"]:
+                    # print(cpe_uri)
+                    uri = cpe_uri.split(":")
+
+                    vendor = check_empty(uri[3].replace("\\", ""))
+                    product = check_empty(uri[4].replace("\\", ""))
+                    version = check_empty(uri[5])
+
+                    cpe = CPE.query.filter(
+                        Vendor.name == vendor,
+                        Product.name == product,
+                        CPE.version == version
+                    ).first()
+
+                    if cpe:
+                        cve.cves.append(cpe)
+                        db.session.commit()
+                    else:
+                        print("skipping...")
 
 
 funcs = {
@@ -108,7 +128,7 @@ funcs = {
     "create-tables": create_tables,
     "fill-db-cve": fill_cve,
     "fill-db-cpe": fill_cpe,
-    "build": build_relationships,
+    "build-rel": build_relationships,
 }
 
 
