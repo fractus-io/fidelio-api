@@ -116,7 +116,7 @@ def build_relationships():
                     ).first()
 
                     if cpe:
-                        cve.cves.append(cpe)
+                        cve.cpes.append(cpe)
                         db.session.commit()
                     else:
                         print("skipping...")
