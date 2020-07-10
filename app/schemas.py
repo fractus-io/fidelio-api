@@ -5,26 +5,36 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 class CVESchema(SQLAlchemyAutoSchema):
     class Meta:
         model = CVE
+        include_fk = True
+        include_relationships = True
 
 
 class ProductSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Product
+        include_fk = True
+        include_relationships = True
 
 
 class VendorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Vendor
+        include_fk = True
+        include_relationships = True
 
 
 class CPESchema(SQLAlchemyAutoSchema):
     class Meta:
         model = CPE
+        include_fk = True
+        include_relationships = True
 
 
 class ReferenceSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Reference
+        include_fk = True
+        include_relationships = True
 
 
 cve_schema = CVESchema()
