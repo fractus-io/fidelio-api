@@ -6,11 +6,11 @@ from app.schemas import cve_schema, cves_schema, product_schema, products_schema
     references_schema
 
 
-api = Blueprint('api', __name__)
+cve = Blueprint("cve", __name__)
 
 
-@api.route("/")
-def home():
+@cve.route("/")
+def all_cves():
     cves = CVE.query.all()
 
     return {
@@ -18,8 +18,8 @@ def home():
     }
 
 
-@api.route("/<string:id>")
-def cve(id):
+@cve.route("/<string:id>")
+def cve_by_id(id):
     cve = CVE.query.filter_by(id=id).first_or_404()
 
     return {
