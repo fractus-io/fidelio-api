@@ -11,11 +11,17 @@ api = Blueprint('api', __name__)
 
 @api.route("/")
 def home():
-    cve = CVE.query.first()
+    cves = CVE.query.all()
 
-    return {"home": cve_schema.dump(cve)}
+    return {
+        "cves": cves_schema.dump(cves)
+    }
 
 
-@api.route("/<string:variable>")
-def greeting(variable):
-    return {"hello": variable}
+@api.route("/<string:id>")
+def cve(id):
+    cve = CVE.query.filter_by(id=id).first_or_404()
+
+    return {
+        "cve": cve_schema.dump(cve)
+    }

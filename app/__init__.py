@@ -15,9 +15,12 @@ ma = Marshmallow()
 
 from app.api.routes import api
 from app.errors.handlers import errors
+from app.docs.routes import swag, swaggerui_blueprint, SWAGGER_URL
 
-app.register_blueprint(api)
+app.register_blueprint(api, url_prefix="/api/cve")
 app.register_blueprint(errors)
+app.register_blueprint(swag)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 
 def create_app():
@@ -30,10 +33,13 @@ def create_app():
 
     from app.api.routes import api
     from app.errors.handlers import errors
+    from app.docs.routes import swag, swaggerui_blueprint, SWAGGER_URL
 
     profiler.init_app(app)
 
-    app.register_blueprint(api)
+    app.register_blueprint(api, url_prefix="/api/cve")
     app.register_blueprint(errors)
+    app.register_blueprint(swag, url_prefix="/api")
+    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
     return app

@@ -2,7 +2,9 @@ lxml
 flask
 gunicorn
 psycopg2
+flask-swagger
 flask_profiler
+flask-swagger-ui
 flask_sqlalchemy
 flask_marshmallow
 marshmallow-sqlalchemy
