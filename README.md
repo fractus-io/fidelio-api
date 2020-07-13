@@ -1,25 +1,62 @@
-# incubator
+# fidelio
 REST API that serves data from [National Vulnerability Database](https://nvd.nist.gov/)
 
 ## Prerequisites
 System dependencies:
 - [Docker](https://docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [Python 3.6.9 +](https://python.org)
 
-## Gettings started
+## Getting started
 To run this app locally, run the following:
 ```bash
 docker-compose up
 ```
-This will build up all the services that are listed in docker-compose.yml file.
+This will build up all the services that are listed in [docker-compose.yml](./docker-compose.yml) file.
 <br>
 
-If you are running this project for the first time, tables in the database are not defined. To solve this, open new terminal window and type the following:
+If you are running this project for the first time, tables in the database are not defined and empty. To solve this, open new terminal window and type the following commands:
 ```bash
-docker exec -it incubator_api python create_db.py
+python3 download_cve.py
 ```
-This will create all tables and columns in the databse and grant the user permissions needed. Use this command whenever you make a new change to databse models in `app/models.py` or you just want to flush the database
+```bash
+python3 download_cpe.py
+```
+*These two commands will download all the data from NVD in zip files*
+<br>
+<br>
+```bash
+docker exec -it fidelio_api python manip_db.py create-tables
+```
+*This will create all the tables defined in [models.py](./app/models.py)*
+<br>
+<br>
+```bash
+docker exec -it fidelio_api python manip_db.py fill-cve
+```
+*This will extract all the CVE data from zip files and fill the database with them*
+<br>
+<br>
+```bash
+docker exec -it fidelio_api python manip_db.py fill-cpe
+```
+*This will extract all the CPE, vendor and product data from zip files and fill the database with them*
+<br>
+<br>
+```bash
+docker exec -it fidelio_api python manip_db.py build-rel
+```
+*This will create relationships between CVE and CPE models*
+<br>
+<br>
+**NOTE**: Last command is very resource intensive, execution can last up to 24 hours
 
+
+## API usage
+coming soon :construction:
+
+## Code Style
+Linter flake8 was used during the writing of the project. Main guideline is to not overcomplicate things and to not cross line length which is set to 100.
 
 ## Made with
 - [Docker](https://docker.com/) - containerzation and virtualization
