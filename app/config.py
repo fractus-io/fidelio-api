@@ -16,6 +16,10 @@ class BaseConfig(object):
             "engine": "sqlalchemy",
             "db_url": os.environ.get("DB_URI", "sqlite:///test.db"),
         },
+        "ignore": [
+            "^/spec",
+            "^/api/docs.*",
+        ],
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get("secret_key", ''.join(
