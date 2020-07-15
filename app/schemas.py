@@ -44,7 +44,7 @@ vendor_schema = VendorSchema()
 vendors_schema = VendorSchema(many=True)
 
 cpe_schema = CPESchema()
-cpes_schema = CVESchema(many=True)
+cpes_schema = CPESchema(many=True)
 
 reference_schema = ReferenceSchema()
 references_schema = ReferenceSchema(many=True)
