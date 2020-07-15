@@ -15,11 +15,13 @@ ma = Marshmallow()
 
 from app.cve.routes import cve
 from app.cpe.routes import cpe
+from app.software.routes import software
 from app.errors.handlers import errors
 from app.docs.routes import swag, swaggerui_blueprint, SWAGGER_URL
 
 app.register_blueprint(cve, url_prefix="/api/cve")
 app.register_blueprint(cpe, url_prefix="/api/cpe")
+app.register_blueprint(software, url_prefix="/api/software")
 app.register_blueprint(errors)
 app.register_blueprint(swag)
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
@@ -35,6 +37,7 @@ def create_app():
 
     from app.cve.routes import cve
     from app.cpe.routes import cpe
+    from app.software.routes import software
     from app.errors.handlers import errors
     from app.docs.routes import swag, swaggerui_blueprint, SWAGGER_URL
 
@@ -42,6 +45,7 @@ def create_app():
 
     app.register_blueprint(cve, url_prefix="/api/cve")
     app.register_blueprint(cpe, url_prefix="/api/cpe")
+    app.register_blueprint(software, url_prefix="/api/software")
     app.register_blueprint(errors)
     app.register_blueprint(swag, url_prefix="/api")
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
