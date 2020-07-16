@@ -64,7 +64,7 @@ def cpe_by_product(product_name):
       - name: product_name
         in: path
         required: true
-        type: integer
+        type: string
         description: Product name of the CPE in the database
     responses:
       200:
@@ -90,7 +90,7 @@ def cpe_by_vendor(vendor_name):
       - name: vendor_name
         in: path
         required: true
-        type: integer
+        type: string
         description: Vendor name of the CPE in the database
     responses:
       200:
