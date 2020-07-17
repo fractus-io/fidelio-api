@@ -24,6 +24,7 @@ def get_software(product_name, version):
         description: name of the CPE product
       - name: version
         in: path
+        required: true
         type: string
         description: CPE version
     responses:

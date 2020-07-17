@@ -32,13 +32,13 @@ docker exec -it fidelio_api python manip_db.py create-tables
 <br>
 <br>
 ```bash
-docker exec -it fidelio_api python manip_db.py fill-cve
+docker exec -it fidelio_api python manip_db.py fill-db-cve
 ```
 *This will extract all the CVE data from zip files and fill the database with them*
 <br>
 <br>
 ```bash
-docker exec -it fidelio_api python manip_db.py fill-cpe
+docker exec -it fidelio_api python manip_db.py fill-db-cpe
 ```
 *This will extract all the CPE, vendor and product data from zip files and fill the database with them*
 <br>
@@ -53,7 +53,8 @@ docker exec -it fidelio_api python manip_db.py build-rel
 
 
 ## API usage
-coming soon :construction:
+API uses [Swagger](https://swagger.io) to display documentation, you can find it [here](http://46.101.210.113/api/docs).
+
 
 ## Code Style
 Linter flake8 was used during the writing of the project. Main guideline is to not overcomplicate things and to not cross line length which is set to 100.
